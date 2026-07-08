@@ -19,8 +19,27 @@
     />
 
     <title>LiliTools — Herramientas de Liliana</title>
-    <script type="module" crossorigin src="/LiliTools/assets/index-C-TIvD1I.js"></script>
-    <link rel="stylesheet" crossorigin href="/LiliTools/assets/index-ChWgKEO7.css">
+
+    <!-- Aplica el tema antes de pintar la página: evita el "flash" del tema
+         equivocado al cargar. Se repite la misma lógica en useTheme.js. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('lilitools-theme')
+          var theme =
+            stored === 'light' || stored === 'dark'
+              ? stored
+              : window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light'
+          document.documentElement.setAttribute('data-theme', theme)
+        } catch (e) {
+          /* localStorage puede estar bloqueado (modo privado); seguimos en claro. */
+        }
+      })()
+    </script>
+    <script type="module" crossorigin src="/LiliTools/assets/index-DEGgd0y6.js"></script>
+    <link rel="stylesheet" crossorigin href="/LiliTools/assets/index-BWk8FQdM.css">
   </head>
   <body>
     <div id="root"></div>
