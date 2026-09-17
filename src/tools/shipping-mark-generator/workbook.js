@@ -8,7 +8,7 @@
  * imágenes del template de referencia al escribir, no solo leer filas.
  */
 import { TITLE_CELL, TITLE_MIRROR_CELLS, DESCRIPTION_CELLS, MFG_NUMBER_ROW, MFG_NUMBER_COLS, MFG_NUMBER_LABEL, MAX_ROWS } from './config.js'
-import { classifyHeader, FIELD_LABELS, codeToSheetName, buildOutputFilename, triggerDownload } from './utils.js'
+import { classifyHeader, FIELD_LABELS, codeToSheetName, codeDedupeKey, buildOutputFilename, triggerDownload } from './utils.js'
 
 export { MAX_ROWS }
 
@@ -54,7 +54,10 @@ export async function parseShippingMarkWorkbook(arrayBuffer) {
     if (!description) errors.push('Falta la descripción')
     if (!mfgNumber) errors.push('Falta el N° de Fabricante')
 
-    const dedupeKey = code.toUpperCase()
+    // Ignora cuántas "Z" iniciales tiene el código al comparar: "ZHE1001" y
+    // "ZZHE1001" se marcan como el mismo insumo (ver codeDedupeKey), aunque
+    // el nombre de hoja de cada fila respete lo tipeado tal cual.
+    const dedupeKey = codeDedupeKey(code)
     if (dedupeKey) {
       if (seenCodes.has(dedupeKey)) errors.push('Código duplicado')
       else seenCodes.add(dedupeKey)

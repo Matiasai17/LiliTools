@@ -39,14 +39,24 @@ export const FIELD_LABELS = {
 }
 
 /**
- * Código de input → nombre de hoja: saca una única "Z" inicial (may. o min.)
- * si existe, y sanitiza caracteres inválidos para nombres de hoja de Excel
- * (\ / ? * [ ] :), truncando al límite de 31 caracteres.
+ * Código de input → nombre de hoja: el código tal cual lo tipeó el ingeniero
+ * (mismo criterio que el título de la etiqueta, sin sacar ninguna "Z"),
+ * sanitizando caracteres inválidos para nombres de hoja de Excel
+ * (\ / ? * [ ] :) y truncando al límite de 31 caracteres.
  */
 export function codeToSheetName(code) {
-  const stripped = String(code).replace(/^Z/i, '')
-  const safe = stripped.replace(/[\\/?*[\]:]/g, '-').trim()
+  const safe = String(code).replace(/[\\/?*[\]:]/g, '-').trim()
   return (safe || String(code)).slice(0, 31)
+}
+
+/**
+ * Clave de comparación para detectar duplicados: saca todas las "Z"/"z"
+ * iniciales (una o más) y pasa a mayúsculas. Así "ZHE1001" y "ZZHE1001" se
+ * siguen marcando como el mismo insumo (probable error de tipeo de cuántas
+ * Z lleva), aunque el nombre de hoja de cada uno respete lo tipeado tal cual.
+ */
+export function codeDedupeKey(code) {
+  return String(code).replace(/^Z+/i, '').toUpperCase()
 }
 
 /**
