@@ -8,7 +8,7 @@
  * imágenes del template de referencia al escribir, no solo leer filas.
  */
 import { TITLE_CELL, TITLE_MIRROR_CELLS, DESCRIPTION_CELLS, MFG_NUMBER_ROW, MFG_NUMBER_COLS, MFG_NUMBER_LABEL, MAX_ROWS } from './config.js'
-import { classifyHeader, FIELD_LABELS, codeToSheetName, triggerDownload } from './utils.js'
+import { classifyHeader, FIELD_LABELS, codeToSheetName, buildOutputFilename, triggerDownload } from './utils.js'
 
 export { MAX_ROWS }
 
@@ -73,7 +73,17 @@ export async function parseShippingMarkWorkbook(arrayBuffer) {
 
 /** Clona una hoja completa (valores, estilos, anchos, merges e imágenes) dentro del mismo workbook. */
 function cloneWorksheet(protoWs, workbook, tempName) {
-  const ws = workbook.addWorksheet(tempName)
+  const ws = workbook.addWorksheet(tempName, {
+    // `addWorksheet()` sin esto arranca con sus propios defaults (alto/ancho
+    // de fila y columna por defecto de ExcelJS, no los del template). Las
+    // filas/columnas SIN ancho u alto explícito heredaban ese default
+    // distinto y crecían un poco en cada hoja clonada, desalineando el logo
+    // y el pictograma (ambos anclados por fila/columna) contra los bordes de
+    // sus celdas — el "corte" que se ve en toda hoja menos la primera.
+    properties: { ...protoWs.properties },
+    pageSetup: { ...protoWs.pageSetup },
+    views: protoWs.views,
+  })
 
   protoWs.columns.forEach((col, i) => {
     ws.getColumn(i + 1).width = col?.width
@@ -153,7 +163,7 @@ export async function buildShippingMarkWorkbook(rows, templateArrayBuffer, onPro
 }
 
 /** Descarga el workbook final ya generado. */
-export async function downloadShippingMarkWorkbook(workbook, filename = 'LiliTools_ShippingMark.xlsx') {
+export async function downloadShippingMarkWorkbook(workbook, filename = buildOutputFilename()) {
   const buffer = await workbook.xlsx.writeBuffer()
   triggerDownload(
     new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }),

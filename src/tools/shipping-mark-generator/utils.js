@@ -48,3 +48,15 @@ export function codeToSheetName(code) {
   const safe = stripped.replace(/[\\/?*[\]:]/g, '-').trim()
   return (safe || String(code)).slice(0, 31)
 }
+
+/**
+ * Nombre del archivo de salida: "Shipping-Mark_YYYY-MM-DD.xlsx" (fecha de
+ * hoy). Aislado en su propia función porque el formato todavía puede
+ * cambiar (a definir con el ingeniero real).
+ */
+export function buildOutputFilename() {
+  const d = new Date()
+  const pad = (n) => String(n).padStart(2, '0')
+  const stamp = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+  return `Shipping-Mark_${stamp}.xlsx`
+}
