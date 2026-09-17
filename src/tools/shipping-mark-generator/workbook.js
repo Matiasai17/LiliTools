@@ -74,19 +74,22 @@ export async function parseShippingMarkWorkbook(arrayBuffer) {
 /** Clona una hoja completa (valores, estilos, anchos, merges e imágenes) dentro del mismo workbook. */
 function cloneWorksheet(protoWs, workbook, tempName) {
   const ws = workbook.addWorksheet(tempName, {
-    // `addWorksheet()` sin esto arranca con sus propios defaults (alto/ancho
-    // de fila y columna por defecto de ExcelJS, no los del template). Las
-    // filas/columnas SIN ancho u alto explícito heredaban ese default
-    // distinto y crecían un poco en cada hoja clonada, desalineando el logo
-    // y el pictograma (ambos anclados por fila/columna) contra los bordes de
-    // sus celdas — el "corte" que se ve en toda hoja menos la primera.
+    // Sin esto la hoja nueva arranca con los defaults de ExcelJS (alto de
+    // fila 15, sin defaultColWidth) en vez de los del template (14.4 /
+    // 11.44), y toda fila o columna sin medida explícita queda distinta.
     properties: { ...protoWs.properties },
     pageSetup: { ...protoWs.pageSetup },
     views: protoWs.views,
   })
 
+  // Ancho y estilo de columna: el template define una fuente por defecto a
+  // nivel columna (atributo `style` en <col>), no celda por celda; sin
+  // copiarla, todo lo que esté fuera del rango con estilo propio queda con
+  // otra fuente.
   protoWs.columns.forEach((col, i) => {
-    ws.getColumn(i + 1).width = col?.width
+    const target = ws.getColumn(i + 1)
+    target.width = col?.width
+    if (col?.style) target.style = col.style
   })
 
   for (let r = 1; r <= protoWs.rowCount; r++) {
@@ -102,9 +105,16 @@ function cloneWorksheet(protoWs, workbook, tempName) {
     row.commit()
   }
 
-  // Merges e imágenes del template (las imágenes comparten el mismo binario
-  // ya registrado en `workbook`, así que clonar N hojas no infla el archivo).
-  for (const range of protoWs.model.merges) ws.mergeCells(range)
+  // mergeCellsWithoutStyle y NO mergeCells: este último pisa el estilo de las
+  // celdas esclavas con el de la maestra, y en el template el borde derecho
+  // del recuadro vive en la esclava (G10:G13 en los merges F10:G10..F13:G13),
+  // no en la maestra. Con mergeCells esos bordes se perdían y el contorno de
+  // la etiqueta salía cortado en toda hoja clonada. Es la misma API que usa
+  // ExcelJS internamente al leer un archivo, por eso la hoja 1 nunca falló.
+  for (const range of protoWs.model.merges) ws.mergeCellsWithoutStyle(range)
+
+  // Las imágenes comparten el binario ya registrado en `workbook`, así que
+  // clonar N hojas no infla el archivo.
   for (const img of protoWs.getImages()) ws.addImage(img.imageId, img.range)
 
   return ws
