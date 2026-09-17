@@ -3,13 +3,17 @@ import { Link, Outlet, useLocation } from 'react-router-dom'
 
 import { useRole } from '../hooks/useRole.js'
 import { useTheme } from '../hooks/useTheme.js'
+import Icon from './Icon.jsx'
 import SuggestionPanel from './SuggestionPanel.jsx'
 import styles from './Layout.module.css'
 import logoUrl from '/logo.svg'
 
+// Íconos reusados de components/Icon.jsx: paleta para diseño, llave (ícono
+// "tool" genérico) para ingeniería. Solo van como aria-label/title: el switch
+// no muestra texto.
 const ROLE_TABS = [
-  { value: 'diseñador', label: 'Diseño' },
-  { value: 'ingeniero', label: 'Ingeniería' },
+  { value: 'diseñador', label: 'Diseño', icon: 'palette' },
+  { value: 'ingeniero', label: 'Ingeniería', icon: 'tool' },
 ]
 
 /*
@@ -37,7 +41,7 @@ export default function Layout() {
           </Link>
 
           <div className={styles.actions}>
-            <RoleTabs role={role} onChange={setRole} />
+            <RoleSwitch role={role} onChange={setRole} />
             <button
               type="button"
               className={styles.themeToggle}
@@ -81,14 +85,17 @@ export default function Layout() {
 }
 
 /*
- * Selector de rol del home, con semántica de tabs (tablist/tab) navegable por
- * teclado: ←/→ mueven el foco y activan el rol (roving tabindex, activación
- * automática). No hay tabpanel dedicado porque filtra tarjetas en el home en
- * vez de alternar entre paneles separados; por eso `aria-controls` apunta al
- * grid de herramientas cuando existe, y no pasa nada si la ruta actual no lo
- * tiene montado (por ejemplo, dentro de una herramienta).
+ * Selector de rol del home: switch horizontal de 2 posiciones (estilo iOS),
+ * con semántica de tabs (tablist/tab) navegable por teclado: ←/→ mueven el
+ * foco y activan el rol (roving tabindex, activación automática). Sin rol
+ * elegido todavía, el thumb queda oculto (ningún ícono resaltado); al elegir
+ * uno, desliza detrás del ícono correspondiente. No hay tabpanel dedicado
+ * porque filtra tarjetas en el home en vez de alternar entre paneles
+ * separados; por eso `aria-controls` apunta al grid de herramientas cuando
+ * existe, y no pasa nada si la ruta actual no lo tiene montado (por ejemplo,
+ * dentro de una herramienta).
  */
-function RoleTabs({ role, onChange }) {
+function RoleSwitch({ role, onChange }) {
   const tabRefs = useRef({})
 
   function focusAndSelect(value) {
@@ -104,8 +111,17 @@ function RoleTabs({ role, onChange }) {
     focusAndSelect(next.value)
   }
 
+  const thumbClass = [
+    styles.roleSwitchThumb,
+    role ? styles.roleSwitchThumbVisible : '',
+    role === 'ingeniero' ? styles.roleSwitchThumbRight : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <div className={styles.roleTabs} role="tablist" aria-label="Filtrar herramientas por rol">
+    <div className={styles.roleSwitch} role="tablist" aria-label="Filtrar herramientas por rol">
+      <span className={thumbClass} aria-hidden="true" />
       {ROLE_TABS.map((tab, index) => {
         const selected = role === tab.value
         // Sin rol elegido todavía, el primer tab queda en el orden de tabulación
@@ -123,12 +139,14 @@ function RoleTabs({ role, onChange }) {
             id={`role-tab-${tab.value}`}
             aria-selected={selected}
             aria-controls="home-tools-grid"
+            aria-label={tab.label}
+            title={tab.label}
             tabIndex={isTabbable ? 0 : -1}
-            className={`${styles.roleTab} ${selected ? styles.roleTabActive : ''}`}
+            className={`${styles.roleSwitchTab} ${selected ? styles.roleSwitchTabActive : ''}`}
             onClick={() => focusAndSelect(tab.value)}
             onKeyDown={(event) => handleKeyDown(event, index)}
           >
-            {tab.label}
+            <Icon name={tab.icon} size={18} />
           </button>
         )
       })}

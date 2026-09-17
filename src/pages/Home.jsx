@@ -5,25 +5,41 @@ import { tools } from '../tools/registry.js'
 import styles from './Home.module.css'
 
 /*
- * Ordena las tarjetas según el rol activo: las del rol elegido van primero,
- * conservando su orden relativo del registry (sort es estable). Sin rol
- * elegido (primera visita, antes de tocar el filtro del header) no se
- * reordena nada: todas las tarjetas pesan igual.
+ * Nivel de la tarjeta dentro de la grilla: primero las "completas" (sin dev),
+ * después las "En desarrollo" (dev: true), y al final las pinnedLast (hoy solo
+ * el buscador de artworks). Sort es estable, así que dentro de cada nivel se
+ * conserva el orden del registry salvo que haya un rol activo (ver abajo).
  */
-function sortByRole(list, role) {
-  if (!role) return list
-  return [...list].sort((a, b) => (a.role === role ? 0 : 1) - (b.role === role ? 0 : 1))
+function tier(tool) {
+  if (tool.pinnedLast) return 2
+  if (tool.dev) return 1
+  return 0
+}
+
+/*
+ * Ordena las tarjetas: primero por nivel (tier), y dentro de cada nivel, si
+ * hay un rol activo, las del rol elegido van antes que las del otro rol. Sin
+ * rol elegido (primera visita, antes de tocar el filtro del header) no se
+ * reordena por rol: todas las tarjetas del mismo nivel pesan igual.
+ */
+function sortTools(list, role) {
+  return [...list].sort((a, b) => {
+    const tierDiff = tier(a) - tier(b)
+    if (tierDiff !== 0) return tierDiff
+    if (!role) return 0
+    return (a.role === role ? 0 : 1) - (b.role === role ? 0 : 1)
+  })
 }
 
 /*
  * Home: portada del hub. Renderiza la grilla mapeando el registry, atenuando
- * las tarjetas del rol no activo (filtro elegido en el header vía RoleTabs).
+ * las tarjetas del rol no activo (filtro elegido en el header vía RoleSwitch).
  * Contempla el estado vacío (registry sin entradas).
  */
 export default function Home() {
   const { role } = useOutletContext()
   const hasTools = tools.length > 0
-  const orderedTools = sortByRole(tools, role)
+  const orderedTools = sortTools(tools, role)
 
   return (
     <section>

@@ -1,0 +1,171 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 640px;
+}
+
+/* ----- Botones (mismo criterio visual que label-generator) ----- */
+.btnLink {
+  align-self: flex-start;
+  padding: 0;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-accent);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.btnLink:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btnPrimary {
+  align-self: flex-start;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  color: var(--color-accent-contrast);
+  background: var(--color-accent);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.btnPrimary:not(:disabled):hover {
+  background: var(--color-accent-hover);
+}
+.btnPrimary:not(:disabled):active {
+  transform: translateY(1px);
+  background: var(--color-accent-active);
+}
+.btnPrimary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ----- Dropzone (mismo patrón que label-generator: modo lote) ----- */
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-7) var(--space-5);
+  text-align: center;
+  background: var(--color-surface);
+  border: 2px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+.dropzone:hover {
+  border-color: var(--color-accent);
+  background: var(--color-bg-muted);
+}
+.dropzone:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-focus);
+}
+.dropzoneDrag {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+.dropTitle {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+}
+.dropLink {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.dropHint {
+  font-size: var(--fs-sm);
+  color: var(--color-text-soft);
+}
+
+/* ----- Estado / errores ----- */
+.status {
+  min-height: 1.4em;
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+  font-weight: var(--fw-semibold);
+}
+.statusLive {
+  min-height: 1.2em;
+}
+.error {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-sm);
+  color: var(--color-error);
+  background: var(--color-error-bg);
+  border-radius: var(--radius-md);
+  line-height: var(--lh-snug);
+}
+
+/* ----- Lista de filas parseadas ----- */
+.rowList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.rowItem {
+  display: grid;
+  grid-template-columns: 2.5em 1fr 2fr;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
+}
+
+.rowItemError {
+  background: var(--color-error-bg);
+  border-color: var(--color-error);
+}
+
+.rowIndex {
+  color: var(--color-text-soft);
+  font-variant-numeric: tabular-nums;
+}
+.rowCode {
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+}
+.rowDesc {
+  grid-column: 3;
+  color: var(--color-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rowMfg {
+  grid-column: 1 / -1;
+  font-size: var(--fs-xs);
+  color: var(--color-text-soft);
+}
+.rowErrors {
+  grid-column: 1 / -1;
+  font-weight: var(--fw-semibold);
+  color: var(--color-error);
+}
+
+@media (max-width: 480px) {
+  .rowItem {
+    grid-template-columns: 1fr;
+  }
+  .rowDesc {
+    grid-column: 1;
+  }
+}

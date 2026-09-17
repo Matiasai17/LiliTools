@@ -10,6 +10,10 @@ const LabelGenerator = lazy(() => import('./label-generator/LabelGenerator.jsx')
 // Lazy por el mismo motivo: embebe fuentes + plantillas vectoriales y arma PDF.
 const WarrantyGenerator = lazy(() => import('./warranty-generator/WarrantyGenerator.jsx'))
 
+// Lazy: el trazado de contornos (marching squares) y la generación de DXF solo
+// hacen falta al abrir la herramienta, no en el bundle del home.
+const ImageToDxf = lazy(() => import('./image-to-dxf/ImageToDxf.jsx'))
+
 // Lazy, y con motivo de peso: arrastra three.js (~150 KB gzip) para el render 3D
 // del pallet. Cargarlo bajo demanda deja el bundle del home intacto.
 const Palletizing = lazy(() => import('./palletizing/Palletizing.jsx'))
@@ -18,6 +22,10 @@ const Palletizing = lazy(() => import('./palletizing/Palletizing.jsx'))
 // "Guardar PDF" / "Subir PDF" (ver pdfBuilder.js / pdfImport.js), pero el
 // componente en sí también se difiere para no pesar en el bundle del home.
 const ArtworkChecklist = lazy(() => import('./artwork-checklist/ArtworkChecklist.jsx'))
+
+// Lazy: arrastra ExcelJS (pesada) para clonar el template de referencia con
+// estilos, merges e imágenes intactos; solo hace falta al abrir la herramienta.
+const ShippingMarkGenerator = lazy(() => import('./shipping-mark-generator/ShippingMarkGenerator.jsx'))
 
 /*
  * Registry central del catálogo de herramientas (fuente de verdad del home).
@@ -37,9 +45,14 @@ const ArtworkChecklist = lazy(() => import('./artwork-checklist/ArtworkChecklist
  *                  descripción se ven nítidos (sin el blur por defecto). Se usa
  *                  para herramientas reales que ya funcionaron y están en pausa,
  *                  a diferencia de los placeholders que nunca se construyeron.
+ *   - pinnedLast:  opcional; la tarjeta se renderiza siempre al final de la
+ *                  grilla, sin importar el rol activo (ver sortTools en Home.jsx).
  *   - component:   solo para 'available'. Es el módulo de la herramienta.
  *
- * Sumar una herramienta real = crear su módulo en src/tools/<id>/,
+ * Orden de la grilla en el home (Home.jsx / sortTools): primero las tarjetas
+ * "completas" (sin `dev`), después las `dev` ("En desarrollo"), y al final las
+ * `pinnedLast`. Dentro de cada grupo, si hay un rol activo, sus tarjetas van
+ * primero. Sumar una herramienta real = crear su módulo en src/tools/<id>/,
  * importarlo acá, asignar `component` y poner status 'available'.
  * Nada más del armazón debe tocarse.
  */
@@ -87,9 +100,10 @@ export const tools = [
     name: 'Imagen a DXF para Láser',
     description: 'Convertí una imagen simple en un DXF vectorial para corte o grabado láser. Todo en tu navegador.',
     icon: 'vector',
-    status: 'coming-soon',
+    status: 'available',
     role: 'diseñador',
-    readable: true,
+    dev: true,
+    component: ImageToDxf,
   },
 
   // ----- Rol: ingeniero -----
@@ -105,12 +119,25 @@ export const tools = [
     component: Palletizing,
   },
   {
+    id: 'shipping-mark-generator',
+    name: 'Generador de Shipping Mark',
+    description:
+      'Subí la plantilla de códigos completada y generá el shipping mark de cada uno, con el formato de Liliana listo para imprenta.',
+    icon: 'document',
+    status: 'available',
+    role: 'ingeniero',
+    dev: true,
+    component: ShippingMarkGenerator,
+  },
+  {
     id: 'artwork-finder',
     name: 'Buscador de artworks',
     description: 'Buscá un producto y visualizá la última versión de su artwork: etiquetas, manuales, gráficas, cajas e imágenes.',
     icon: 'search',
     status: 'coming-soon',
     role: 'ingeniero',
+    readable: true,
+    pinnedLast: true,
   },
 ]
 
