@@ -1,0 +1,83 @@
+.intro {
+  margin-bottom: var(--space-6);
+}
+
+.title {
+  font-size: var(--fs-2xl);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin-top: var(--space-2);
+  font-size: var(--fs-md);
+  color: var(--color-text-soft);
+  max-width: 52ch;
+}
+
+/* Grilla responsiva: se adapta sola a la cantidad de tarjetas y al ancho. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.gridItem {
+  display: flex;
+}
+
+/* Tarjetas del rol no activo: se mantienen a tamaño normal, solo un poco más
+   transparentes (siguen visibles y usables, no ocultas). Al pasar el mouse o
+   enfocarlas por teclado recuperan opacidad plena.
+   !important es necesario acá: la animación de entrada `cardIn` de .gridItem
+   usa fill-mode "both", que deja su opacity:1 final aplicada indefinidamente
+   y le gana en cascada a una opacity normal (las animaciones CSS priman sobre
+   reglas de autor sin !important). */
+.gridItemDim {
+  opacity: 0.62 !important;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.gridItemDim:hover,
+.gridItemDim:focus-within {
+  opacity: 1 !important;
+}
+
+/* Entrada escalonada sutil de las tarjetas. */
+.gridItem {
+  animation: cardIn var(--dur-slow) var(--ease-out) both;
+}
+.gridItem:nth-child(1) { animation-delay: 0ms; }
+.gridItem:nth-child(2) { animation-delay: 40ms; }
+.gridItem:nth-child(3) { animation-delay: 80ms; }
+.gridItem:nth-child(4) { animation-delay: 120ms; }
+.gridItem:nth-child(5) { animation-delay: 160ms; }
+.gridItem:nth-child(6) { animation-delay: 200ms; }
+.gridItem:nth-child(7) { animation-delay: 240ms; }
+.gridItem:nth-child(n + 8) { animation-delay: 280ms; }
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ----- Estado vacío ----- */
+.empty {
+  text-align: center;
+  padding: var(--space-8) var(--space-5);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+}
+.emptyTitle {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+}
+.emptyText {
+  margin-top: var(--space-2);
+  color: var(--color-text-soft);
+}

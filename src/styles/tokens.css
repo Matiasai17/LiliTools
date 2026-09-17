@@ -1,0 +1,129 @@
+/*
+ * LiliTools — tokens de diseño (fuente de verdad del sistema visual).
+ * Basado en brand.md (marca Liliana). Reutilizar estas variables en todo el hub:
+ * no hardcodear colores, tamaños ni sombras en los componentes.
+ *
+ * Regla de marca: el rojo es ACENTO, no fondo. Base neutra; el rojo respira encima.
+ */
+
+:root {
+  /* ----- Color: acento de marca -----
+   * #e42320 viene del logo oficial (Logo-1.svg). brand.md lista #DA291C como
+   * equivalente, pero el documento aclara que "ante diferencias, mandan los assets".
+   */
+  --color-accent: #e42320;
+  --color-accent-hover: #c01d1a;
+  --color-accent-active: #a3160f;
+  --color-accent-contrast: #ffffff; /* texto sobre relleno rojo (cumple AA en botón) */
+  --color-accent-soft: #fdecea;     /* tinte muy suave para fondos de énfasis puntual */
+
+  /* ----- Color: base neutra ----- */
+  --color-bg: #ffffff;
+  --color-bg-muted: #fafafa;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f2f2f2;
+  --color-border: #e5e5e5;
+  --color-border-strong: #d4d4d4;
+  --color-header-bg: rgba(255, 255, 255, 0.85); /* header con blur: translúcido sobre --color-bg */
+
+  /* ----- Color: texto ----- */
+  --color-text: #1a1a1a;       /* títulos y cuerpo principal (no negro puro) */
+  --color-text-muted: #444444; /* texto secundario */
+  --color-text-soft: #6b6b6b;  /* descripciones, metadatos */
+
+  /* ----- Color: estados ----- */
+  --color-error: #c01d1a;
+  --color-error-bg: #fdecea;
+  --color-success: #2e7d32;
+  --color-focus: #1a73e8; /* anillo de foco accesible, distinto del rojo de marca */
+
+  /* ----- Tipografía ----- */
+  --font-sans: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --fs-xs: 0.75rem;   /* 12px */
+  --fs-sm: 0.875rem;  /* 14px */
+  --fs-base: 1rem;    /* 16px */
+  --fs-md: 1.125rem;  /* 18px */
+  --fs-lg: 1.375rem;  /* 22px */
+  --fs-xl: 1.75rem;   /* 28px */
+  --fs-2xl: 2.25rem;  /* 36px */
+  --fs-3xl: 2.75rem;  /* 44px */
+
+  --fw-regular: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+
+  --lh-tight: 1.2;
+  --lh-snug: 1.35;
+  --lh-normal: 1.55;
+
+  /* ----- Espaciado (escala 4px) ----- */
+  --space-1: 0.25rem;  /* 4 */
+  --space-2: 0.5rem;   /* 8 */
+  --space-3: 0.75rem;  /* 12 */
+  --space-4: 1rem;     /* 16 */
+  --space-5: 1.5rem;   /* 24 */
+  --space-6: 2rem;     /* 32 */
+  --space-7: 3rem;     /* 48 */
+  --space-8: 4rem;     /* 64 */
+
+  /* ----- Radios ----- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+
+  /* ----- Sombras (suaves, coherentes con marca cálida) ----- */
+  --shadow-sm: 0 1px 2px rgba(26, 26, 26, 0.06);
+  --shadow-md: 0 4px 16px rgba(26, 26, 26, 0.08);
+  --shadow-lg: 0 12px 32px rgba(26, 26, 26, 0.12);
+  --shadow-focus: 0 0 0 3px rgba(26, 115, 232, 0.45);
+
+  /* ----- Layout ----- */
+  --content-max: 1100px;
+  --header-h: 68px;
+
+  /* ----- Movimiento ----- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+}
+
+/*
+ * ----- Modo oscuro -----
+ * Mismo set de variables, reasignado. `data-theme` lo controla useTheme.js
+ * (persistido en localStorage, con fallback a prefers-color-scheme en la
+ * primera visita). El acento rojo se mantiene: sigue siendo marca, solo se
+ * reubican los neutros alrededor.
+ */
+:root[data-theme='dark'] {
+  --color-accent: #ff5652;
+  --color-accent-hover: #ff746f;
+  --color-accent-active: #e8433f;
+  --color-accent-contrast: #1a1a1a;
+  --color-accent-soft: rgba(255, 86, 82, 0.16);
+
+  --color-bg: #17181a;
+  --color-bg-muted: #101112;
+  --color-surface: #202124;
+  --color-surface-muted: #2a2b2f;
+  --color-border: #34363a;
+  --color-border-strong: #45474c;
+  --color-header-bg: rgba(23, 24, 26, 0.85);
+
+  --color-text: #f2f2f2;
+  --color-text-muted: #c7c8ca;
+  --color-text-soft: #9a9ba0;
+
+  --color-error: #ff6b67;
+  --color-error-bg: rgba(255, 107, 103, 0.14);
+  --color-success: #4caf50;
+  --color-focus: #6ab0ff;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.55);
+  --shadow-focus: 0 0 0 3px rgba(106, 176, 255, 0.45);
+}

@@ -1,0 +1,7 @@
+Arimo (arimo-regular.woff, arimo-bold.woff)
+Copyright 2011 Google Inc.
+Licensed under the Apache License, Version 2.0.
+http://www.apache.org/licenses/LICENSE-2.0
+
+Used only to trace vector glyph outlines for exported labels (metrically
+compatible with Arial/Helvetica, matching the AFM width tables in label-svg.js).

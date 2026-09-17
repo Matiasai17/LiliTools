@@ -1,0 +1,25 @@
+[
+  { "code": "HM1AR", "flag": "T", "unitsPerBox": 4, "boxesPerLayer": 40, "layers": 10 },
+  { "code": "PTC10", "flag": "X", "unitsPerBox": 1, "boxesPerLayer": 29, "layers": 8 },
+  { "code": "CFI700 (G/A/R/V)", "flag": "X", "unitsPerBox": 1, "boxesPerLayer": 28, "layers": 6 },
+  { "code": "CFH10", "flag": "X", "unitsPerBox": 1, "boxesPerLayer": 25, "layers": 6 },
+  { "code": "AB102 / AB175", "flag": "T", "unitsPerBox": 2, "boxesPerLayer": 14, "layers": 6 },
+  {
+    "code": "AM600",
+    "flag": "T",
+    "unitsPerBox": 2,
+    "boxesPerLayer": 12,
+    "layers": 6,
+    "note": "Los lados abiertos del film deben quedar en las caras principales de las cajas."
+  },
+  {
+    "code": "AL600",
+    "flag": "T",
+    "unitsPerBox": 2,
+    "boxesPerLayer": 30,
+    "layers": 3,
+    "note": "Se bajó de 4 a 3 pisos: el peso de la jarra de vidrio hacía ceder el piso base. Estándar corregido por experiencia de planta."
+  },
+  { "code": "VTFM14", "flag": "X", "unitsPerBox": 1, "boxesPerLayer": 14, "layers": 3 },
+  { "code": "CHPIE2000", "flag": "X", "unitsPerBox": 1, "boxesPerLayer": 2, "layers": 3 }
+]

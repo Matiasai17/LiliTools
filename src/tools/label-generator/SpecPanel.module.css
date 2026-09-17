@@ -1,0 +1,107 @@
+/*
+ * Rótulo / panel de specs — portado del CSS de Et.art/v7.
+ * Medidas en mm y colores técnicos propios del documento de imprenta
+ * (cyan/magenta/dark-blue), NO los de la marca LiliTools.
+ */
+
+.panel {
+  --cyan: #29abe2;
+  --magenta: #d4006a;
+  --dark-blue: #0d3572;
+  --header-bg: #eaf5fc;
+  --version: #999999;
+
+  display: flex;
+  width: 170mm;
+  border: 0.4pt solid var(--magenta);
+  border-radius: 1px;
+  background: #fff;
+  color: #000;
+  font-family: 'Calibri', 'Arial', sans-serif;
+  overflow: hidden;
+}
+
+.left {
+  width: 62mm;
+  padding: 4mm;
+  border-right: 0.4pt solid var(--magenta);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.productType {
+  color: var(--cyan);
+  font-size: 14pt;
+  font-weight: 400;
+  line-height: 1.2;
+}
+.productName {
+  color: var(--cyan);
+  font-size: 7pt;
+  margin-top: 3mm;
+  line-height: 1.35;
+}
+
+.right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 6.5pt;
+}
+.table thead th {
+  background: var(--header-bg);
+  color: var(--dark-blue);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-bottom: 0.4pt solid var(--magenta);
+  padding: 1.8mm 2.5mm;
+  text-align: left;
+}
+
+.subheader {
+  background: rgba(41, 171, 226, 0.1);
+  color: var(--dark-blue);
+  font-weight: 700;
+  text-align: left;
+  letter-spacing: 0.06em;
+  font-size: 5.5pt;
+  text-transform: uppercase;
+  padding: 1mm 2.5mm;
+  border-bottom: 0.4pt solid var(--magenta);
+}
+
+.table td {
+  padding: 1mm 2.5mm;
+  border-bottom: 0.4pt solid var(--magenta);
+  vertical-align: middle;
+  color: #000;
+}
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.rowLabel {
+  color: #666;
+  font-size: 6pt;
+  white-space: nowrap;
+  width: 28mm;
+}
+
+.placeholder {
+  color: #ccc;
+  font-style: italic;
+  font-size: 6pt;
+}
+
+.versionCell {
+  text-align: right;
+  color: var(--version);
+  font-size: 6pt;
+  padding-right: 2mm !important;
+}

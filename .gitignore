@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Clon de deploy: copia del build con su propio .git apuntando a GitHub Pages.
+# No es código fuente; se regenera al desplegar.
+.repo-sync/
+
+# Datos persistidos por el backend (sugerencias del hub)
+server/artwork-finder/data/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local
+.env.*.local

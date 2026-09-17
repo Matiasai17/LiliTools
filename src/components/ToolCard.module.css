@@ -1,0 +1,139 @@
+.card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  height: 100%;
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+}
+
+/* Hover/foco animado solo para tarjetas navegables. */
+.card:not(.disabled):hover,
+.card:not(.disabled):focus-visible {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-border-strong);
+}
+
+.iconWrap {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  transition: background var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
+}
+
+/* Acento de marca en el ícono al interactuar (rojo como detalle puntual). */
+.card:not(.disabled):hover .iconWrap,
+.card:not(.disabled):focus-visible .iconWrap {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.title {
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-md);
+  color: var(--color-text);
+  line-height: var(--lh-snug);
+}
+
+.desc {
+  font-size: var(--fs-sm);
+  color: var(--color-text-soft);
+  line-height: var(--lh-snug);
+}
+
+.badge {
+  flex-shrink: 0;
+  padding: 2px var(--space-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.02em;
+  color: var(--color-accent-contrast);
+  background: var(--color-accent);
+  border-radius: var(--radius-pill);
+}
+
+/* Sello "En desarrollo": amarillo, legible en claro y oscuro (relleno + texto oscuro). */
+.badgeDev {
+  flex-shrink: 0;
+  padding: 2px var(--space-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.02em;
+  color: #3d2c00;
+  background: #fbbf24;
+  border-radius: var(--radius-pill);
+}
+
+.arrow {
+  position: absolute;
+  right: var(--space-5);
+  bottom: var(--space-5);
+  font-size: var(--fs-lg);
+  color: var(--color-text-soft);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+}
+.card:not(.disabled):hover .arrow,
+.card:not(.disabled):focus-visible .arrow {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--color-accent);
+}
+
+/* Estado "Próximamente": atenuado y claramente no interactivo. */
+.disabled {
+  opacity: 0.4;
+  cursor: default;
+  background: var(--color-bg-muted);
+  box-shadow: none;
+}
+
+.disabled .title,
+.disabled .desc {
+  filter: blur(4px);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Excepción: tarjetas "próximamente" marcadas readable se ven a pleno (sin
+   atenuar ni desenfocar el texto), pero siguen no navegables y con su sello
+   "Próximamente". */
+.disabled.readable {
+  opacity: 1;
+}
+.disabled.readable .title,
+.disabled.readable .desc {
+  filter: none;
+  user-select: text;
+}

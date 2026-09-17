@@ -1,0 +1,289 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+/* ----- Panel de controles ----- */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-muted);
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-base);
+  font-family: inherit;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+.input:focus,
+.select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+.input {
+  text-transform: uppercase;
+}
+
+.urlPreview {
+  font-size: var(--fs-sm);
+  color: var(--color-text-soft);
+  word-break: break-all;
+  line-height: var(--lh-snug);
+}
+.urlBase {
+  color: var(--color-text-soft);
+}
+.urlCode {
+  color: var(--color-accent);
+  font-weight: var(--fw-bold);
+}
+
+/* ----- Selector de formato (control segmentado) ----- */
+.segment {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.segmentTrack {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  padding: var(--space-1);
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-md);
+}
+
+.segmentOption {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-3) var(--space-2);
+  text-align: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+.segmentOption:hover {
+  background: var(--color-bg);
+}
+/* Foco por teclado sobre el radio oculto → resaltamos la opción. */
+.segmentOption:focus-within {
+  box-shadow: var(--shadow-focus);
+}
+
+.segmentActive {
+  background: var(--color-surface);
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.segmentLabel {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+}
+.segmentActive .segmentLabel {
+  color: var(--color-accent);
+}
+
+.segmentHint {
+  font-size: var(--fs-xs);
+  color: var(--color-text-soft);
+  line-height: var(--lh-tight);
+}
+
+.hint {
+  font-size: var(--fs-xs);
+  color: var(--color-text-soft);
+  line-height: var(--lh-snug);
+}
+
+/* ----- Acciones ----- */
+.actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.btnPrimary,
+.btnSecondary {
+  flex: 1;
+  min-width: 140px;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+}
+
+.btnPrimary {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  box-shadow: var(--shadow-sm);
+}
+.btnPrimary:not(:disabled):hover {
+  background: var(--color-accent-hover);
+}
+.btnPrimary:not(:disabled):active {
+  transform: translateY(1px);
+  background: var(--color-accent-active);
+}
+
+.btnSecondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+}
+.btnSecondary:not(:disabled):hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.btnSecondary:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+.btnPrimary:disabled,
+.btnSecondary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.fileName {
+  font-size: var(--fs-sm);
+  color: var(--color-text-soft);
+  word-break: break-all;
+}
+.fileName b {
+  color: var(--color-text-muted);
+  font-weight: var(--fw-bold);
+}
+
+.statusLive {
+  min-height: 1.2em;
+}
+.error {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-sm);
+  color: var(--color-error);
+  background: var(--color-error-bg);
+  border-radius: var(--radius-md);
+  line-height: var(--lh-snug);
+}
+
+/* ----- Previsualización ----- */
+.previewCol {
+  position: sticky;
+  top: calc(var(--header-h) + var(--space-5));
+}
+
+.preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: var(--space-5);
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.previewPlaceholder {
+  background: var(--color-bg-muted);
+  border-style: dashed;
+  border-color: var(--color-border-strong);
+}
+
+.previewText {
+  color: var(--color-text-soft);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+.qrImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  animation: qrIn var(--dur-base) var(--ease-out) both;
+}
+
+@keyframes qrIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.busyTag {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  padding: 2px var(--space-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-muted);
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-pill);
+}
+
+/* ----- Responsive ----- */
+@media (max-width: 760px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .previewCol {
+    position: static;
+    order: -1; /* en mobile, la previsualización va arriba de los controles */
+  }
+  .preview {
+    max-width: 440px;
+    margin: 0 auto;
+  }
+}
