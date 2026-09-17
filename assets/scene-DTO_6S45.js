@@ -1,4 +1,4 @@
-import{g as Rl,P as Ca}from"./Palletizing-BzYybjCO.js";import"./index-BjAMEkMU.js";/**
+import{g as Rl,P as Ca}from"./Palletizing-WpzJ7odM.js";import"./index-DRMTZc75.js";/**
  * @license
  * Copyright 2010-2026 Three.js Authors
  * SPDX-License-Identifier: MIT
